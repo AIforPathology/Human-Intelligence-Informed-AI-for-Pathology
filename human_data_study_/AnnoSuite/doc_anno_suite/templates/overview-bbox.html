@@ -1,0 +1,196 @@
+{% extends "layout/layout.html" %}
+
+{% block styles %}
+<link href="../../static/stylesheets/recodeStyle.css" rel="stylesheet">
+<link href="../../static/stylesheets/myPagination.css" rel="stylesheet" />
+{% endblock styles%}
+
+{% block nav_overview_bbox %}active{% endblock %}
+
+{% block content %}
+
+{% if schemas %}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <!-- schemas -->
+            {% set last_label = namespace(l = '') %}
+            {% set first_helper = namespace(i = 0) %}
+            {% for label in schemas %}
+
+            {% if label.label_type == 0 %}
+
+            {% if loop.index0 == 0 %}
+                <label id="imageCount"></label>
+            {% endif %}
+
+            {% if loop.index0 != 0 %}
+            <input type="radio" name="{{last_label.l}}-querymode" class="querymode-input"
+                id="{{last_label.l}}-querymode-1" value="1" checked>
+            <label for="{{last_label.l}}-querymode-1" class="querymode-radio">&nbsp;Union </label>
+            {% if first_helper.i == 0 %}
+            <button type="button" id="query-mode-box-union" class="btn btn-primary btn-circle btn-sm"
+                data-toggle="tooltip" data-html="true" title="
+                When union is selected, images that satisfy any (OR operation) selected encoding tag will be displayed.
+            ">?</button>
+            {% endif %}
+            <input type="radio" name="{{last_label.l}}-querymode" class="querymode-input"
+                id="{{last_label.l}}-querymode-2" value="2">
+            <label for="{{last_label.l}}-querymode-2" class="querymode-radio">&nbsp;Intersection </label>
+            {% if first_helper.i == 0 %}
+            <button type="button" id="query-mode-box-intersect" class="btn btn-primary btn-circle btn-sm"
+                data-toggle="tooltip" data-html="true" title="
+                When the intersection is selected, only images that satisfy all (AND operation) selected encoding tags will be displayed.
+            ">?</button>
+            {% set first_helper.i = 1 %}
+            {% endif %}
+            <hr>
+            {% endif %}
+            {% set last_label.l = label.label_id %}
+            <h5 class="category-text" id="{{label.label_id}}">{{label.label_name}}</h5>
+
+            {% else %}
+            <input type="checkbox" class="btn-check check-label" id="{{label.label_id}}" name="{{label.label_parent}}"
+                ltype="{{label.label_type}}" autocomplete="off">
+            <label class="btn btn-outline-primary" id="{{label.label_id}}-label"
+                for="{{label.label_id}}">{{label.label_name}}</label>
+
+            {% endif %}
+
+            {% if loop.last %}
+            <input type="radio" name="{{last_label.l}}-querymode" class="querymode-input"
+                id="{{last_label.l}}-querymode-1" value="1" checked>
+            <label for="{{last_label.l}}-querymode-1" class="querymode-radio">&nbsp;Union </label>&nbsp;&nbsp;
+            <input type="radio" name="{{last_label.l}}-querymode" class="querymode-input"
+                id="{{last_label.l}}-querymode-2" value="2">
+            <label for="{{last_label.l}}-querymode-2" class="querymode-radio">&nbsp;Intersection </label>
+            {% endif %}
+
+            {% endfor %}
+
+            <!-- assignments -->
+            <hr>
+            <h5 class="category-text" id="assignment">Assignment</h5>
+            {% for user in users %}
+            <input type="checkbox" class="btn-check check-user" id="{{user}}" name="assignment" autocomplete="off">
+            <label class="btn btn-outline-primary" id="{{user}}-label" for="{{user}}">{{user}}</label>
+            {% endfor %}
+            <input type="checkbox" class="querymode-input" id="user-select-all">
+            <label for="user-select-all" class="querymode-radio">&nbsp;All annotators </label>&nbsp;&nbsp;
+            <input type="radio" name="user-querymode" class="querymode-input querymode-radio-user" id="userquerymode-1"
+                value="1" checked>
+            <label for="user-querymode-1" class="querymode-radio">&nbsp;Union </label>&nbsp;&nbsp;
+            <input type="radio" name="user-querymode" class="querymode-input querymode-radio-user" id="userquerymode-2"
+                value="2">
+            <label for="user-querymode-2" class="querymode-radio">&nbsp;Intersection </label>
+            <!-- annotation results -->
+            <hr>
+            <h5 class="category-text" id="type">Annotation Results</h5>
+            <input type="checkbox" class="btn-check check-type" id="annotated-0" name="type" autocomplete="off">
+            <label class="btn btn-outline-primary" id="annotated-0-label" for="annotated-0">Not annotated</label>
+            <input type="checkbox" class="btn-check check-type" id="annotated-1" name="type" autocomplete="off">
+            <label class="btn btn-outline-primary" id="annotated-1-label" for="annotated-1">Annotated</label>
+            <!-- years -->
+            {% if years %}
+            <hr>
+            <h5 class="category-text" id="assignment">Years</h5>
+            {% for year in years %}
+            <input type="checkbox" class="btn-check check-year" id="year-{{year}}" name="year" autocomplete="off">
+            <label class="btn btn-outline-primary" id="year-{{year}}-label" for="year-{{year}}">{{year}}</label>
+            {% endfor %}
+            <input type="checkbox" class="querymode-input" id="year-select-all">
+            <label for="year-select-all" class="querymode-radio">&nbsp;All years </label>&nbsp;&nbsp;
+            {% endif %}
+            <!-- consistency -->
+            <hr>
+            <h5 class="category-text" id="res">Consistency</h5>
+            <input type="radio" class="btn-check check-consistency" id="cons-2" name="consistency" autocomplete="off"
+                checked>
+            <label class="btn btn-outline-primary" id="cons-2-label" for="cons-2">Ignore</label>
+            <input type="radio" class="btn-check check-consistency" id="cons-1" name="consistency" autocomplete="off">
+            <label class="btn btn-outline-primary" id="cons-1-label" for="cons-1">Consistent</label>
+            <input type="radio" class="btn-check check-consistency" id="cons-0" name="consistency" autocomplete="off">
+            <label class="btn btn-outline-primary" id="cons-0-label" for="cons-0">Inconsistent</label>
+            <!-- controls -->
+            <hr>
+            <input type="checkbox" class="btn-check check-config" id="exclude-check" name="config" autocomplete="off">
+            <label class="btn btn-outline-primary" id="exclude-check-label" for="exclude-check">Exclude</label>
+            <button type="button" id="exclude-exp-box" class="btn btn-primary btn-circle btn-sm" data-toggle="tooltip"
+                data-html="true" title="
+                When the Exclude is selected, the interface shows all images expect these images with the selected tags.
+                ">?</button>&nbsp;&nbsp;
+            <input type="checkbox" class="btn-check check-config" id="fun-check" name="config" autocomplete="off">
+            <label class="btn btn-outline-primary" id="fun-check-label" for="fun-check">Fun figures</label>
+            <input type="checkbox" class="btn-check check-config" id="ok-check" name="config" autocomplete="off">
+            <label class="btn btn-outline-primary" id="ok-check-label" for="ok-check">OK figures</label>
+            <input type="checkbox" class="btn-check check-config" id="discuss-check" name="config" autocomplete="off">
+            <label class="btn btn-outline-primary" id="discuss-check-label" for="discuss-check">To discuss</label>
+            <!-- sort controls -->
+            <input type="radio" checked class="querymode-input check-sort" id="sort-0" name="sort-config"
+                autocomplete="off">
+            <label class="querymode-radio" id="sort-0-label" for="sort-0">Sort by default
+                order</label>&nbsp;&nbsp;
+            <input type="radio" class="querymode-input check-sort" id="sort-1" name="sort-config" autocomplete="off">
+            <label class="querymode-radio" id="sort-1-label" for="sort-1">Sort by
+                similarity</label>&nbsp;&nbsp;
+            <input type="radio" class="querymode-input check-sort" id="sort-2" name="sort-config" autocomplete="off">
+            <label class="querymode-radio" id="sort-2-label" for="sort-2">Sort by paper</label>&nbsp;&nbsp;
+            <button type="button" id="query-btn" class="btn btn-success">Confirm</button>
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+    <hr>
+
+    <div class="loader">
+        
+    </div>
+    <div id='anno-instruction'>
+        Clicking an image will show the coding interface. If you are the originally assigned coders, your current choices will be shown. If you are not, a new interface will be shown and your action will be recorded as an additional coder.
+    </div>
+
+    <div class="row">
+        <div id="pagination" class="pagination"></div>
+
+    </div>
+
+    <div class="row" id="annotation-gallery">
+
+        
+    </div>
+
+
+</div>
+
+<hr>
+<br>
+<br>
+
+
+
+{% endif %}
+
+{% endblock content %}
+
+{% block libs %}
+<script src="../static/libs/fabric.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="../static/libs/myPagination.js"></script>
+<script type="text/javascript">
+    var username = '{{username}}';
+    var is_ready = '{{is_ready}}'; 
+</script>
+<script src="../static/javascripts/annotations/dbutils.js"></script>
+<script src="../static/javascripts/annotations/overview-bbox.js"></script>
+
+{% endblock libs%}

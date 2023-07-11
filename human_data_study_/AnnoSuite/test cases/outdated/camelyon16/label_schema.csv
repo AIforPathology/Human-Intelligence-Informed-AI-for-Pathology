@@ -1,0 +1,17 @@
+M_label_id,M_label_name,M_label_type,M_label_parent,M_label_abbr,O_label_bbox,O_label_required,O_label_placeholder,O_label_icon,O_label_color
+lab_1,Rumor Type,0,root,RT,,,,,
+lab_2,Type 1,4,lab_1,T1,,,,,#316cf4
+lab_3,Type 2,4,lab_1,T2,,,,,#408558
+lab_4,Type 3,5,lab_1,T3,,,,,#f6c344
+lab_5,Image Type,0,root,IT,,,,,
+lab_6,Normal,2,lab_5,NOR,,,,,
+lab_7,Tumor,2,lab_5,TUM,,,,,
+lab_8,Isup_grade,0,root,ISUP,,,,,
+lab_9,0,2,lab_8,ISUP-0,,,,,
+lab_10,1,2,lab_8,ISUP-1,,,,,
+lab_11,2,2,lab_8,ISUP-2,,,,,
+lab_12,3,2,lab_8,ISUP-3,,,,,
+lab_13,4,2,lab_8,ISUP-4,,,,,
+lab_14,5,2,lab_8,ISUP-5,,,,,
+lab_15,Comments,0,root,COMR,,,,,
+lab_16,,3,lab_15,COM,,,,,

@@ -1,0 +1,4 @@
+M_image_id,M_image_name,M_image_url,M_display_order,O_caption_url,O_paper_url,O_year
+I1,VisC.239.11.png,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Images/2005/VisC.239.11.png,1,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Captions/2005/VisC.239.11.png,http://dx.doi.org/10.1109/VISUAL.2005.1532801,2005
+I2,InfoVisJ.1182.8.png,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Images/2020/InfoVisJ.1182.8.png,2,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Captions/2020/InfoVisJ.1182.10.png,http://dx.doi.org/10.1109/TVCG.2020.3030460,2020
+I3,InfoVisJ.678.8.png,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Images/2015/InfoVisJ.678.8.png,3,https://web.cse.ohio-state.edu/~chen.8028/VisPubImages/Captions/2015/InfoVisJ.678.8.png,http://dx.doi.org/10.1109/TVCG.2015.2467992,2015

@@ -1,0 +1,380 @@
+{% extends "layout/layout.html" %}
+
+{% block styles %}
+<link href="../../static/stylesheets/annotationStyle.css" rel="stylesheet">
+<link href="../../static/libs/annotorious/annotorious.min.css" rel="stylesheet">
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">{% endblock
+styles%}
+
+{% block nav_annotate %}active{% endblock nav_annotate%}
+
+
+
+{% block content %}
+
+{% if schemas %}
+
+<div class="container-fluid" id="training-welcome">
+
+    <button type="button" id="start-train-btn" class="btn btn-secondary">Start training</button>
+
+</div>
+
+<div class="container-fluid" id="formal-welcome">
+
+    <button type="button" id="start-formal-btn" class="btn btn-secondary">Start the formal study</button>
+
+</div>
+
+<div class="container-fluid" id="exit-welcome">
+
+    <p id="exit-welcome-text">
+        Thank you for participating our study!
+        <img style="width:2rem; height:2rem; margin-bottom: 5px" src="../static/images/icecream.png">
+    </p>
+
+</div>
+
+<div class="container-fluid" id="annotate-box">
+    <div class="row">
+
+        <div class="col-md-10" id="ImagePanel">
+            <div id="widgetPanel">
+                <div class="form-group .image-meta-info" id="paper-meta-info">
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img class="url-img" id="discuss-btn" ifClicked=0 src="../static/images/icons/discuss-0.png"
+                        data-toggle="tooltip" title="mark as a to-discuss figure">
+                    <img class="url-img" id="bookmark-btn" ifClicked=0 src="../static/images/icons/fun-0.png"
+                        data-toggle="tooltip" title="mark as a fun figure">
+                    <img class="url-img" id="caption-btn" ifClicked=0 src="../static/images/icons/caption-0.png"
+                        data-toggle="tooltip" title="show caption">
+                    <img class="url-img" id="paper-btn" src="../static/images/icons/paper-link-0.png"
+                        data-toggle="tooltip" title="link to the paper">
+
+                </div>
+                <div class="form-group .image-meta-info" id="coding-meta-info">
+
+                </div>
+
+            </div>
+            <div id="img-box">
+                <img class="origin-img" id="vis-img" src="../static/images/placeHolder-gray.png">
+            </div>
+            <!-- <div style="text-align: right;" id="mark-error-box">
+                <label><input type="checkbox" id="error-btn" value="">&nbsp;This figure has error</label>
+                <button type="button" id = "loadGT" class="btn btn-outline-primary">Show Ground Truth Annotations</button>
+            </div> -->
+
+
+        </div>
+        <div class="col-md-2" id="AnnoPanel">
+
+            <div class="row">
+                <!-- <div class="col-sm-5">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Go to</span>
+                        <input type="text" id="image-index-text" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                
+                </div> -->
+
+
+                <div class="col-sm-3">
+                    <label class="col-form-label" id="index-label"></label>
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-secondary" id="exit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-power" viewBox="0 2 16 16">
+                            <path d="M7.5 1v7h1V1h-1z"></path>
+                            <path
+                                d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-sm-1">
+
+                </div>
+            </div>
+
+
+            <label class="cancer-type block-label" id="cancer-type"></label>
+
+
+
+            {% set first_region = namespace(i = 0) %}
+
+            {% for label in schemas %}
+            {% if label.label_type == 0 %}
+            <hr class="category-hr" id="{{label.label_id}}-hr">
+            <label class="category-text block-label" id="{{label.label_id}}">{{label.label_name}}</label>
+            {% elif label.label_type == 1 %}
+            <input type="checkbox" class="btn-check check-label" id="{{label.label_id}}" name="{{label.label_parent}}"
+                autocomplete="off">
+            <label class="btn btn-outline-primary" id="{{label.label_id}}-label"
+                for="{{label.label_id}}">{{label.label_name}}</label>
+            {% elif label.label_type == 2 %}
+            <div class="radio-div">
+                <input type="radio" class="btn-check radio-label {{label.label_parent}}-radio"
+                    name="{{label.label_parent}}" id="{{label.label_id}}" autocomplete="off">
+                <label class="btn btn-outline-primary" id="{{label.label_id}}-label"
+                    for="{{label.label_id}}">{{label.label_name}}</label>
+                <label class="GT-label" id="{{label.label_id}}-GT"></label>
+            </div>
+
+            {% elif label.label_type == 3 %}
+            {% if label.label_name == None%}
+
+            {% else %}
+            <label class="input-text">{{label.label_name}}</label>
+            {% endif %}
+            {% if label.label_placeholder == None%}
+            <textarea class="form-control text-label" name="{{label.label_parent}}" placeholder=""
+                id="{{label.label_id}}"></textarea>
+            {% else %}
+            <textarea class="form-control text-label" name="{{label.label_parent}}"
+                placeholder="{{label.label_placeholder}}" id="{{label.label_id}}"></textarea>
+            {% endif %}
+            <!-- rect box -->
+            {% elif label.label_type == 4 %}
+            <button type="button" id="{{label.label_id}}"
+                class="btn btn-outline-primary block-label local-btn rect-btn">
+                {{label.label_name}} &nbsp;
+                <div class="svg-btn-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent"
+                        stroke="{{label.label_color}}" stroke-width="8" class="bi bi-1-circle-fill"
+                        viewBox="0 0 100 100">
+                        <path d="M 11.87,79.59
+                        C 11.87,79.59 11.87,19.99 11.87,19.99M 19.94,87.67
+                        C 19.94,87.67 79.45,87.67 79.45,87.67M 87.52,21.63
+                        C 87.52,21.63 87.52,79.59 87.52,79.59M 19.94,11.91
+                        C 19.94,11.91 79.45,11.91 79.45,11.91M 95.59,87.67
+                        C 95.59,92.13 91.98,95.74 87.52,95.74
+                        83.06,95.74 79.45,92.13 79.45,87.67
+                        79.45,83.21 83.06,79.60 87.52,79.60
+                        91.98,79.60 95.59,83.21 95.59,87.67 Z
+                        M 95.59,11.91
+                        C 95.59,16.37 91.98,19.98 87.52,19.98
+                        83.06,19.98 79.45,16.37 79.45,11.91
+                        79.45,7.45 83.06,3.84 87.52,3.84
+                        91.98,3.84 95.59,7.45 95.59,11.91 Z
+                        M 19.94,87.67
+                        C 19.94,92.13 16.33,95.74 11.87,95.74
+                        7.41,95.74 3.80,92.13 3.80,87.67
+                        3.80,83.21 7.41,79.60 11.87,79.60
+                        16.33,79.60 19.94,83.21 19.94,87.67 Z
+                        M 19.94,11.91
+                        C 19.94,16.37 16.33,19.98 11.87,19.98
+                        7.41,19.98 3.80,16.37 3.80,11.91
+                        3.80,7.45 7.41,3.84 11.87,3.84
+                        16.33,3.84 19.94,7.45 19.94,11.91 Z" />
+                    </svg>
+                </div>
+
+            </button>
+            <!-- polygon  -->
+            {% elif label.label_type == 5 %}
+            <button type="button" id="{{label.label_id}}"
+                class="btn btn-outline-primary block-label local-btn poly-btn">
+                {{label.label_name}} &nbsp;
+                <div class="svg-btn-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent"
+                        stroke="{{label.label_color}}" stroke-width="8" class="bi bi-1-circle-fill"
+                        viewBox="0 0 100 100">
+                        <path d="M 55.05,55.78
+                        C 55.05,55.78 82.61,81.20 82.61,81.20M 56.03,45.77
+                        C 56.03,45.77 81.57,17.17 81.57,17.17M 58.03,51.08
+                        C 58.03,55.54 54.42,59.15 49.96,59.15
+                        45.50,59.15 41.89,55.54 41.89,51.08
+                        41.89,46.62 45.50,43.01 49.96,43.01
+                        54.42,43.01 58.03,46.62 58.03,51.08 Z
+                        M 12.13,79.32
+                        C 12.13,79.32 12.13,19.71 12.13,19.71M 20.21,87.39
+                        C 20.21,87.39 79.71,87.39 79.71,87.39M 20.21,11.64
+                        C 20.21,11.64 79.71,11.64 79.71,11.64M 95.86,87.39
+                        C 95.86,91.85 92.25,95.46 87.79,95.46
+                        83.33,95.46 79.72,91.85 79.72,87.39
+                        79.72,82.93 83.33,79.32 87.79,79.32
+                        92.25,79.32 95.86,82.93 95.86,87.39 Z
+                        M 95.86,11.64
+                        C 95.86,16.10 92.25,19.71 87.79,19.71
+                        83.33,19.71 79.72,16.10 79.72,11.64
+                        79.72,7.18 83.33,3.57 87.79,3.57
+                        92.25,3.57 95.86,7.18 95.86,11.64 Z
+                        M 20.20,87.39
+                        C 20.20,91.85 16.59,95.46 12.13,95.46
+                        7.67,95.46 4.06,91.85 4.06,87.39
+                        4.06,82.93 7.67,79.32 12.13,79.32
+                        16.59,79.32 20.20,82.93 20.20,87.39 Z
+                        M 20.20,11.64
+                        C 20.20,16.10 16.59,19.71 12.13,19.71
+                        7.67,19.71 4.06,16.10 4.06,11.64
+                        4.06,7.18 7.67,3.57 12.13,3.57
+                        16.59,3.57 20.20,7.18 20.20,11.64 Z" />
+                    </svg>
+                </div>
+            </button>
+            <!-- 6: free-draw -->
+            <!-- 7: circle -->
+            <!-- 8: point -->
+            <!-- 9: ellipse -->
+            <!-- 10: mix-region -->
+            {% elif label.label_type == 10 %}
+            {% if first_region.i == 0 %}
+            <div id="region-toolbar-div">
+                <button type="button" class="btn btn-outline-primary region-toolbar-btn active" id="freehand-tool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent" 
+                        stroke-width="5" viewBox="0 0 70 50">
+                        <g>
+                            <path
+                                d="m 34.427966,2.7542372 c 0,0 -22.245763,20.7627118 -16.737288,27.7542378 5.508475,6.991525 27.648305,-15.36017 34.639831,-9.11017 6.991525,6.25 -11.440678,13.665255 -13.983051,25.423729" />
+                            <g class="handles">
+                                <circle cx="34.427966" cy="2.7542372" r="5" />
+                                <circle cx="38.347458" cy="46.822033" r="5" />
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+                <button type="button" class="btn btn-outline-primary region-toolbar-btn" id="circle-tool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent" stroke="#6e757c"
+                        stroke-width="5" viewBox="0 0 70 50">
+                        <g>
+                            <circle cx="35" cy="25" r="23" />
+                            <g class="handles">
+                                <circle cx="35" cy="2" r="5" />
+                                <circle cx="12" cy="25" r="5" />
+                                <circle cx="58" cy="25" r="5" />
+                                <circle cx="35" cy="48" r="5" />
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+                <!-- <button type="button" class="btn btn-outline-primary region-toolbar-btn" id="line-tool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent" stroke="#6e757c"
+                        stroke-width="5" viewBox="0 0 70 50">
+                        <g>
+                            <line x1="10" y1="50" x2="60" y2="10"></line>
+                            <g class="handles">
+                                <circle cx="55" cy="14" r="5"></circle>
+                                <circle cx="12" cy="47" r="5"></circle>
+                            </g>
+                        </g>
+                    </svg>
+                </button> -->
+                <button type="button" class="btn btn-outline-primary region-toolbar-btn" id="rect-tool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent" stroke="#6e757c"
+                        stroke-width="5" viewBox="0 0 70 50">
+                        <g>
+                            <rect x="12" y="10" width="46" height="30" />
+                            <g class="handles">
+                                <circle cx="12" cy="10" r="5" />
+                                <circle cx="58" cy="10" r="5" />
+                                <circle cx="12" cy="40" r="5" />
+                                <circle cx="58" cy="40" r="5" />
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+                <button type="button" class="btn btn-outline-primary region-toolbar-btn" id="polygon-tool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="transparent" stroke="#6e757c"
+                        stroke-width="5" viewBox="0 0 70 50">
+                        <g>
+                            <path d='M 5,14 60,5 55,45 18,38 Z' />
+                            <g class="handles">
+                                <circle cx="5" cy="14" r="5" />
+                                <circle cx="60" cy="5" r="5" />
+                                <circle cx="55" cy="45" r="5" />
+                                <circle cx="18" cy="38" r="5" />
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <br>
+            {% set first_region.i = 1 %}
+            {% endif %}
+            <button type="button" id="{{label.label_id}}" class="btn btn-outline-primary local-btn mix-btn">
+                {{label.label_name}}
+            </button>
+            {% endif %}
+
+            {% endfor %}
+
+            <div class="anno-ctrl-div mt-2">
+
+
+
+                <!-- <button class="btn btn-primary anno-ctrl-btn" id="savecomment">save</button> -->
+                <!-- <button type="button" class="btn btn-secondary btn-sm" id="pause-eyetracker" isPause="0">Pause</button> -->
+                <button class="btn btn-primary anno-ctrl-btn" id="next">next</button>
+                <button class="btn btn-primary anno-ctrl-btn" id="show-results">show
+                    results</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- <button class="btn btn-primary anno-ctrl-btn" id="previous">previous</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+
+
+            </div>
+            <br>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
+                <label id="error-alert-text"></label>
+                <button type="button" class="btn-close" target-div="error-alert" aria-label="Close"></button>
+            </div>
+
+
+
+            <!-- <div class="eye-tracker-eebug-panel">
+                <hr>
+                <label class="category-text block-label">Coordinates</label>
+                Test coordinates:<label id="screen-coord"></label> <br>
+                Web coordinates:<label id="web-coord"></label> <br>
+                Image coordinates:<label id="img-coord"></label> <br>
+                Viewport coordinates:<label id="viewport-coord"></label> <br>
+
+            </div> -->
+
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block libs %}
+
+
+<script src="../static/libs/blowup.min.js"></script>
+<script type="text/javascript">
+    var username = '{{username}}';
+    var is_ready = '{{is_ready}}';
+    var url_image_id = '{{url_image_id}}';
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+    integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+    crossorigin="anonymous"></script>
+<script src="../static/libs/openseadragon.min.js"></script>
+<!-- <script src="../static/libs/openseadragonmagnifier.js"></script> -->
+<script src="../static/libs/annotorious/openseadragon-annotorious.min.js"></script>
+<script src="../static/libs/annotorious/annotorious-selector-pack.js"></script>
+<script src="../static/libs/annotorious/annotorious-toolbar.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+<script src="../static/javascripts/annotations/dbutils.js"></script>
+<script src="../static/javascripts/annotations/GT.js"></script>
+<script src="../static/javascripts/annotations/annotate-study.js"></script>
+
+
+{% endblock libs%}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- CSS only -->
+    <link href="../../static/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/libs/bootstrap-icon/bootstrap-icons.css">
+    <link href="../../static/stylesheets/style.css" rel="stylesheet">
+
+    {% block styles %}{% endblock styles%}
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="../../static/libs/bootstrap/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="../../static/libs/jquery-3.6.0.min.js"></script>
+
+
+    {% if title %}
+    <title>ScholarAnnoSuite - {{ title }}</title>
+    {% else %}
+    <title>ScholarAnnoSuite</title>
+    {% endif %}
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark anno-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">AnnoSuite</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% if current_user.is_authenticated %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% block nav_annotate %}{% endblock %}" aria-current="page"
+                            href="{{ url_for('annotations.annotate_study') }}">Annotation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block nav_recode %}{% endblock %}" aria-current="page"
+                            href="{{ url_for('annotations.recode') }}">Annotation Review</a>
+                    </li>
+                </ul>
+                {% else %}
+                {% endif %}
+            </div>
+
+            <div class="navbar-nav">
+                {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                <a class="nav-item nav-link {% block nav_admin %}{% endblock %}"
+                    href="{{ url_for('management.admin') }}">Data
+                    Management</a>
+                {% endif %}
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+                {% else %}
+                <a class="nav-item nav-link {% block nav_login %}{% endblock %}"
+                    href="{{ url_for('users.login') }}">Login</a>
+                <a class="nav-item nav-link {% block nav_register %}{% endblock %}"
+                    href="{{ url_for('users.register') }}">Register</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="container-fluid">
+        <div class="row">
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                <label id="success-alert-text"></label>
+                <button type="button" class="btn-close" target-div="success-alert" aria-label="Close"></button>
+            </div>
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert">
+                <label id="danger-alert-text"></label>
+                <button type="button" class="btn-close" target-div="danger-alert" aria-label="Close"></button>
+            </div>
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+
+    <script src="../../static/javascripts/utils.js"></script>
+    {% block libs %}{% endblock %}
+
+
+
+</body>
+
+</html>

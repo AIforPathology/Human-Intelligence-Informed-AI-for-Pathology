@@ -1,0 +1,36 @@
+M_label_id,M_label_name,M_label_type,M_label_parent,M_label_abbr,O_label_bbox,O_label_required,O_label_placeholder,O_label_icon,O_label_color
+lab_0,Encoding / rendering technique,0,root,Encoding,0,1,,,
+lab_1,Generalized Bar Chart,1,lab_0,Bar,1,0,,../static/images/customized_icons/bar-0.png,#e21d26
+lab_2,Point-based Techniques,1,lab_0,Point,1,0,,../static/images/customized_icons/scatter-0.png,#3481b5
+lab_3,Line-based Visualization,1,lab_0,Line,1,0,,../static/images/customized_icons/line-0.png,#54ad53
+lab_4,"Node-link Trees/Graphs, and Networks, Meshes",1,lab_0,Node-link,1,0,,../static/images/customized_icons/nodelinkcir-0.png,#9653a1
+lab_5,Generalized Area Chart,1,lab_0,Area,1,0,,../static/images/customized_icons/area-0.png,#fd802c
+lab_6,Surface-based Techniques & Volumes,1,lab_0,Surface/Volume,1,0,,../static/images/customized_icons/surface-0.png,#fffb56
+lab_7,Generalized Matrix / Grid,1,lab_0,Grid,1,0,,../static/images/customized_icons/matrix-0.png,#a5552d
+lab_8,Glyph-based Techniques,1,lab_0,Glyph,1,0,,../static/images/customized_icons/glyph-0.png,#f486be
+lab_9,"Schematic rep., sche. imgs., sche. concept illu.",1,lab_0,Schematic,1,0,,../static/images/customized_icons/flowchart-0.png,#9a9a9a
+lab_10,GUI (Screenshots) / User Interface Depiction,1,lab_0,GUI,1,0,,../static/images/customized_icons/GUI-0.png,#2efefd
+lab_11,Continuous-pattern-based Visualization,1,lab_0,Pattern,1,0,,../static/images/customized_icons/continuous-0.png,#48bbaa
+lab_12,Text-based Encoding,1,lab_0,Text,1,0,,../static/images/customized_icons/text-0.png,#b29ffa
+lab_13,Continuous color-based encoding,1,lab_0,Color,1,0,,../static/images/customized_icons/color-0.png,#7cfca2
+lab_14,I cannot tell,1,lab_0,I cannot tell,0,0,,../static/images/customized_icons/cannottell-0.png,
+lab_15,Others,3,lab_0,Other,0,0,"e.g., table; photo (use ';' to separate multiple entries)",,
+lab_16,Dimensionality of the rendering,0,root,Dim,0,1,,,
+lab_17,2D,1,lab_16,2D,0,0,,../static/images/customized_icons/2D-0.png,
+lab_18,3D,1,lab_16,3D,0,0,,../static/images/customized_icons/3D-0.png,
+lab_19,I cannot tell,1,lab_16,I cannot tell,0,0,,../static/images/customized_icons/cannottell-0.png,
+lab_20,Multiple composite / views (juxtaposition),0,root,Multi-Comp,0,1,,,
+lab_21,"Yes, manually-arranged",1,lab_20,Yes-manually-arranged,0,0,,../static/images/customized_icons/yes-manu-0.png,
+lab_22,"Yes, machine-arranged",1,lab_20,Yes-machine arranged,0,0,,../static/images/customized_icons/yes-mach-0.png,
+lab_23,No (just one vis),1,lab_20,No (just one vis),0,0,,../static/images/customized_icons/one-vis-0.png,
+lab_24,I cannot tell,1,lab_20,I cannot tell,0,0,,../static/images/customized_icons/cannottell-0.png,
+lab_25,Multiple nested or layered visualizations,0,root,Multi-Nest,0,1,,,
+lab_26,No,2,lab_25,NestNo,0,0,,../static/images/customized_icons/comp-n-0.png,
+lab_27,Yes,2,lab_25,NestYes,0,0,,../static/images/customized_icons/comp-y-0.png,
+lab_28,Maybe,2,lab_25,NestMaybe,0,0,,../static/images/customized_icons/maybe-0.png,
+lab_29,How hard was it to code this image?,0,root,Hardness,0,1,,,
+lab_30,Easy,2,lab_29,Easy,0,0,,../static/images/customized_icons/easy-0.png,
+lab_31,Neutral,2,lab_29,Neutral,0,0,,../static/images/customized_icons/neutral-0.png,
+lab_32,Hard,2,lab_29,Hard,0,0,,../static/images/customized_icons/hard-0.png,
+lab_33,Notes,0,root,Notes,0,0,,,
+lab_34,Note Text,3,lab_33,NoteText,0,0,,,

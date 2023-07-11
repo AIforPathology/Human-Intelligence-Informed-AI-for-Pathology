@@ -1,0 +1,90 @@
+#success-alert{
+    display: none;
+}
+
+#danger-alert{
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+}
+
+#loading-gif{
+    display: none;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+#download_sample{
+    line-height: 1.2 !important;
+}
+
+.config-div{
+    text-align: left;
+}
+
+.btn-circle.btn-sm {
+    width: 20px;
+    height: 20px;
+    padding: 6px 0px !important;
+    border-radius: 15px;
+    font-size: 1rem;
+    line-height: 0.25 !important;
+    text-align: center;
+    overflow: hidden;
+
+}
+
+.inline-div{
+    display: inline;
+}
+
+.modal-check{
+    width: 5rem;
+}
+
+.splitor{
+    background-color: #9b9d9e;
+    width: 0.1rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+.progress{
+    visibility: hidden;
+}
+
+
+.btn-outline-primary {
+    color: #212529 !important;
+    border-color: #ccc;
+}
+
+.btn-outline-primary:hover {
+    color: #212529 !important;
+    border-color: #ccc;
+    background-color: #e6e6e6 !important;
+}
+
+.btn-check:checked+.btn-outline-primary {
+    color: #fff !important;
+    background-color: #337cb3 !important;
+}

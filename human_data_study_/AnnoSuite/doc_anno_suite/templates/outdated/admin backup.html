@@ -1,0 +1,111 @@
+{% extends "layout/layout.html" %}
+
+{% block nav_admin %}active{% endblock %}
+
+{% block content %}
+
+<div class="col-md-2"></div>
+
+<div class="content-section col-md-8">
+
+    <br>
+    <h4>
+        Annotation Configurations
+    </h4>
+
+    <hr>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Image dataset</label>
+        {% if preload.image_data %}
+        <span class="ms-2 badge bg-success">{{preload.image_data}}</span>
+        {% endif %}
+        <form class="row" action="/upload_image_data" method="POST" enctype="multipart/form-data">
+            <div class="col-auto">
+                <input class="form-control" type="file" name="file" id="formFile" multiple="false">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Import</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">User dataset</label>
+        {% if preload.user_data %}
+        <span class="ms-2 badge bg-success">{{preload.user_data}}</span>
+        {% endif %}
+        <form class="row" action="/upload_user_data" method="POST" enctype="multipart/form-data">
+            <div class="col-auto">
+                <input class="form-control" type="file" name="file" id="formFile" multiple="false">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Import</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Label schema</label>
+        {% if preload.label_schema %}
+        <span class="ms-2 badge bg-success">{{preload.label_schema}}</span>
+        {% endif %}
+        <form class="row" action="/upload_label_schema" method="POST" enctype="multipart/form-data">
+            <div class="col-auto">
+                <input class="form-control" type="file" name="file" id="formFile" multiple="false">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Import</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="mb-3">
+        <div class="col-auto">
+            <button type="submit" id="setup-annotation" class="btn btn-success mb-3">Set up Annotation!</button>
+        </div>
+        <div class="col-auto" id="loading-gif">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4>
+        Annotation Results
+    </h4>
+
+    <div class="mb-3">
+        {% if preload.annotate_data %}
+        <span class="ms-2 badge bg-success">{{preload.anno_res}}</span>
+        {% endif %}
+        <form class="row" action="/export_annotation_data" method="POST" enctype="multipart/form-data">
+            <div class="col-auto">
+                <input class="form-control" type="file" name="file" id="formFile" multiple="false">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" name="action" value="Import">Import</button>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" name="action" value="Export">Export</button>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+<div class="col-md-2"></div>
+{% endblock content %}
+
+{% block libs %}
+
+<script src="../static/javascripts/admin.js"></script>
+
+{% endblock libs%}

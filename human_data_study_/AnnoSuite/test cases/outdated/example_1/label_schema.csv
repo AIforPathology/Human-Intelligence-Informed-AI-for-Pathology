@@ -1,0 +1,10 @@
+M_label_id,M_label_name,M_label_type,M_label_parent,M_label_abbr,O_label_bbox,O_label_required,O_label_placeholder,O_label_icon
+lab_1,Encoding/Rendering techiques,0,root,EC,0,1,,
+lab_2,Bar chart,1,lab_1,BCR,1,,,
+lab_3,Point chart,1,lab_1,POT,1,,,
+lab_4,Surface & Volumes,1,lab_1,SUR,1,,,
+lab_5,Encoding comments,3,lab_1,ENC,0,,"e.g., table, photo (use "";"" to seperate multiple entities)",
+lab_6,Hardness,0,root,HC,0,,,
+lab_7,Easy,2,lab_6,EAS,0,,,
+lab_8,Neutral,2,lab_6,NEU,0,,,
+lab_9,Hard,2,lab_6,HAR,0,,,

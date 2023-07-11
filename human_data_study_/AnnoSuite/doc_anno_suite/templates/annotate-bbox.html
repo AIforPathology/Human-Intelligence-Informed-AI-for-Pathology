@@ -1,0 +1,166 @@
+{% extends "layout/layout.html" %}
+
+{% block styles %}
+<link href="../../static/stylesheets/annotationStyle.css" rel="stylesheet">
+{% endblock styles%}
+
+{% block nav_annotate_bbox %}active{% endblock nav_annotate_bbox%}
+
+
+
+{% block content %}
+
+{% if schemas %}
+
+
+
+
+<div class="container-fluid" id="annotate-box">
+
+    <div class="row" id="ctrl-box">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-7">
+            <div class="form-group .image-meta-info" id="paper-meta-info">
+
+                
+                <label style="float: left; font-size: 1rem"><input type="checkbox" id="error-btn" value="">&nbsp;This figure has error</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <img class="url-img" id="ai-loading" style="display: none;" src="../static/images/loading.gif">
+                <input type="checkbox" class="btn-check check-label" id="ai-btn" autocomplete="off">
+                <label class="btn btn-outline-success" for="ai-btn">AI Suggestion</label>
+                <button type="button" id="ai-info" data-bs-toggle="modal" data-bs-target="#ai_info_modal"
+                class="btn btn-primary btn-circle btn-sm">?</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <img class="url-img" id="discuss-btn" ifClicked=0 src="../static/images/icons/discuss-0.png"
+                    data-toggle="tooltip" title="mark as a to-discuss figure">
+                <img class="url-img" id="fun-btn" ifClicked=0 src="../static/images/icons/fun-0.png"
+                    data-toggle="tooltip" title="mark as a fun figure">
+                <img class="url-img" id="caption-btn" ifClicked=0 src="../static/images/icons/caption-0.png"
+                    data-toggle="tooltip" title="show caption">
+                <img class="url-img" id="paper-btn" src="../static/images/icons/paper-link-0.png" data-toggle="tooltip"
+                    title="link to the paper">
+
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Go to</span>
+                        <input type="text" id="image-index-text" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-form-label" id="index-label"></label>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+
+        <div class="col-md-7">
+
+
+            <div class="fabric-canvas-wrapper">
+                <canvas id="img-canvas"></canvas>
+            </div>
+
+            
+
+
+        </div>
+        <div class="col-md-3" id="AnnoPanel">
+            <img class="bbox-indicator" src="../static/images/icons/bbox-indicator-0.png">
+            <label class="category-text inline-block-label">Add a new bounding box for</label>
+            
+            {% for label in schemas %}
+            {% if label.label_type == 0 %}
+            <!-- <div class="grouped-div">
+                <img id="{{label.label_id}}-indicator" class="bbox-indicator" src="../static/images/icons/bbox-indicator-0.png">
+                <label class="category-text inline-block-label" id="{{label.label_id}}">{{label.label_name}}</label>
+            </div> -->
+            
+            {% else %}
+            <div class="grouped-div">
+                <img id="{{label.label_id}}-indicator" class="bbox-indicator" src="../static/images/icons/bbox-indicator-0.png">
+                <button type="button" id="{{label.label_id}}" class="btn btn-default bbox-btn">
+                    {{label.label_name}}</button> 
+            </div>
+            
+            {% endif %}
+            {% endfor %}
+
+
+            <div>
+                <img class="bbox-indicator" src="../static/images/icons/bbox-indicator-0.png">
+                <button class="btn btn-primary anno-ctrl-btn" id="save">save</button>
+                <button class="btn btn-primary anno-ctrl-btn" id="next">next</button>
+                <button class="btn btn-primary anno-ctrl-btn" id="previous">previous</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-1">
+
+        </div>
+
+    </div>
+
+
+    <div class="modal fade" id="ai_info_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">AI Suggestions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ScholarAnnoSuite supports detecting label regions from an image automatically. In order to use this function, you need 
+                    to ensure your label names are in the pre-defined list:
+                    'text', 'title', 'abstract', 'header', 'caption', 'figure', 'table', 'algorithm', 'equation', 'author'
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Gotcha!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block libs %}
+
+
+<script src="../static/libs/fabric.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script type="text/javascript">
+    var username = '{{username}}';
+    var is_ready = '{{is_ready}}';
+    var url_image_id = '{{url_image_id}}';
+</script>
+<script src="../static/javascripts/annotations/dbutils.js"></script>
+<script src="../static/javascripts/annotations/annotate-bbox.js"></script>
+
+{% endblock libs%}

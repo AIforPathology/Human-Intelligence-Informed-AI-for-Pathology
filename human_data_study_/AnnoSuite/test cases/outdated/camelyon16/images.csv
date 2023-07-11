@@ -1,0 +1,4 @@
+M_image_id,M_image_name,M_image_url,M_display_order,O_caption_url,O_paper_url,O_year
+I1,tumor_109,../static/medical_images/test_001/test_001.dzi,1,,,
+I2,tumor_109,../static/medical_images/test_002/test_002.dzi,1,,,
+I3,tumor_109,../static/medical_images/test_004/test_004.dzi,1,,,

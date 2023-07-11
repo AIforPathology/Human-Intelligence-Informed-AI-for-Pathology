@@ -1,0 +1,241 @@
+{% extends "layout/layout.html" %}
+
+{% block nav_admin %}active{% endblock %}
+
+{% block content %}
+
+<div class="col-md-2"></div>
+
+<div class="content-section col-md-8">
+
+
+
+    <br>
+
+    <div style="display: inline;">
+        <h4 class="inline-div">
+            Set up your project
+        </h4>
+
+        <form action="/download_samples" class="inline-div mt-2" style="float: right;" name="action" value="Export"
+            method="POST" enctype="multipart/form-data">
+            <button type="submit" class="btn btn-primary btn-sm" id="download_sample" name="action"
+                value="Export">Download Sample Inputs </button>
+        </form>
+
+    </div>
+
+    <hr>
+
+    <!-- https://www.abeautifulsite.net/posts/whipping-file-inputs-into-shape-with-bootstrap-3/ -->
+    <!-- https://stackoverflow.com/questions/1904168/how-do-i-submit-a-file-input-without-submit-button-using-javascript -->
+    <div class="row">
+        <div class="col-md-6 config-div">
+            <form action="/upload_new_project" id="new_project_form" class="inline-div" method="POST"
+                enctype="multipart/form-data">
+                <span class="btn btn-success btn-file">
+                    New Project <input type="file" id="new_project_btn" name="file" multiple="false" class="upload_zip">
+                </span>
+            </form>
+
+            <button type="button" id="new-project-info" data-bs-toggle="modal" data-bs-target="#new_project_modal"
+                class="btn btn-primary btn-circle btn-sm">?</button>
+
+        </div>
+
+        <br>
+        <br>
+
+
+        <div class="col-md-12 config-div">
+            <form action="/update_project" id="update_project_form" class="inline-div" method="POST"
+                enctype="multipart/form-data">
+                <span class="btn btn-success btn-file">
+                    Update Project<input type="file" id="update_project_btn" name="file" multiple="false"
+                        class="upload_zip">
+                </span>
+            </form>
+
+            <button type="button" id="update-project-info" class="btn btn-primary btn-circle btn-sm"
+                data-bs-toggle="modal" data-bs-target="#update_project_modal">?</button>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="col-md-12 config-div">
+            <form action="/export_annotation_data" id="export_data_form" method="POST" class="inline-div">
+                <button type="submit" name="action" id="export_data_btn" value="Export" class="btn btn-success">
+                    Export Annotation Results</button>
+            </form>
+
+            <button type="button" id="export-data-info" data-bs-toggle="modal" data-bs-target="#export_modal"
+                class="btn btn-primary btn-circle btn-sm">?</button>
+        </div>
+
+        <br>
+        <br>
+        <!-- only for testing -->
+        <!-- <div class="col-md-12 config-div">
+            <form method="POST" class="inline-div progress-form">
+                <button id="export_simulate" class="btn btn-warning">
+                    Export Simulation Results</button>
+            </form>
+
+            <button type="button" id="export-data-info" data-bs-toggle="modal" data-bs-target="#export_modal"
+                class="btn btn-primary btn-circle btn-sm">?</button>
+        </div> -->
+
+        <div class="col-md-12 config-div">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressbar" role="progressbar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <div class="modal fade" id="new_project_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">How to set up a new project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    To set up a new annotation project, you need to upload a zipped file. By default, the zipped files
+                    should include three configuration files:
+                    <ul>
+                        <li><b>image.csv</b>: stores the meta-information (e.g., image name, url, etc.) of images
+                            used for the annotation project.
+                        </li>
+                        <li><b>users.csv</b>: stores the user information (e.g., user name and assignment) for the
+                            project.</li>
+                        <li><b>label_schema.csv</b>: defines what labels should be used in the annotation project.
+                        </li>
+                    </ul>
+                    You can find a sample zip file by clicking the "download sample configurations" on the
+                    upper right side.
+                    For more details about the configuration files, please refer to the <a target="_blank"
+                        href="https://ScholarAnnoSuite.github.io/spec.html">spec of ScholarAnnoSuite</a>.
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Gotcha!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="update_project_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">How to update a new project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    To update the existing project, you need to upload a new zipped file.
+                    <b>Note: </b>Please backup your annotation results each time you update the project by clicking the
+                    "Export Annotation Results" button. If you have mistakenly overwritten your data, please contact Rui
+                    Li
+                    (lirui9601@gmail.com) for the recovery.
+                    By default, the zipped files should include three configuration files:
+                    <ul>
+                        <li><b>image.csv</b>: stores the meta-information (e.g., image name, url, etc.) of images
+                            used for the annotation project.
+                        </li>
+                        <li><b>users.csv</b>: stores the user information (e.g., user name and assignment) for the
+                            project.</li>
+                        <li><b>label_schema.csv</b>: defines what labels should be used in the annotation project.
+                        </li>
+                    </ul>
+                    Optionally, you can upload your pre-annotated data by providing an <b>annotation.csv</b> file. You
+                    can download the annotation.csv file by clicking the "Export Annotation Results" button and updating
+                    the annotations manually or automatically.
+                    For more details about the annotation.csv, please refer to the <a target="_blank"
+                    href="https://ScholarAnnoSuite.github.io/spec.html">spec of ScholarAnnoSuite</a>.
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Gotcha!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="export_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export Annotation Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Export all annotation results as a zipped file.
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Gotcha!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="new-proj-check" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    It seems that you already have an existing project running. Are you sure you want to start a new
+                    project?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="new-proj-cancel" class="btn btn-secondary modal-check"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="new-proj-submit" class="btn btn-success modal-check"
+                        data-bs-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="update-proj-check" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    The current annotation results may be overwritten. Are you sure you want to update the current
+                    project?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="update-proj-cancel" class="btn btn-secondary modal-check"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="update-proj-submit" class="btn btn-success modal-check"
+                        data-bs-dismiss="modal">&nbsp;&nbsp;Yes&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<div class="col-md-2"></div>
+
+{% endblock content %}
+
+{% block libs %}
+
+<script src="../static/javascripts/admin.js"></script>
+<script type="text/javascript">
+    var is_ready = '{{is_ready}}';
+</script>
+
+{% endblock libs%}

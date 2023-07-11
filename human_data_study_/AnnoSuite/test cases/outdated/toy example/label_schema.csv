@@ -1,0 +1,10 @@
+M_label_id,M_label_name,M_label_type,M_label_parent,M_label_abbr,O_label_bbox,O_label_required,O_label_placeholder,O_label_icon,O_label_color
+lab_0,Encoding / rendering technique,0,root,Encoding,0,1,,,
+lab_1,Generalized Bar Chart,1,lab_0,Bar,1,0,,../static/images/customized_icons/bar-0.png,#e21d26
+lab_2,Point-based Techniques,1,lab_0,Point,1,0,,../static/images/customized_icons/scatter-0.png,#3481b5
+lab_3,Line-based Visualization,1,lab_0,Line,1,0,,../static/images/customized_icons/line-0.png,#54ad53
+lab_5,Generalized Area Chart,1,lab_0,Area,1,0,,../static/images/customized_icons/area-0.png,#fd802c
+lab_7,Generalized Matrix / Grid,1,lab_0,Grid,1,0,,../static/images/customized_icons/matrix-0.png,#a5552d
+lab_11,Continuous-pattern-based Visualization,1,lab_0,Pattern,1,0,,../static/images/customized_icons/continuous-0.png,#48bbaa
+lab_13,Continuous color-based encoding,1,lab_0,Color,1,0,,../static/images/customized_icons/color-0.png,#7cfca2
+lab_15,Others,3,lab_0,Other,0,0,"e.g., table; photo (use ';' to separate multiple entries)",,

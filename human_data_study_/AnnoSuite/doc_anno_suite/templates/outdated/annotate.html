@@ -1,0 +1,154 @@
+{% extends "layout/layout.html" %}
+
+{% block styles %}
+<link href="../../static/stylesheets/annotationStyle.css" rel="stylesheet">
+{% endblock styles%}
+
+{% block nav_annotate %}active{% endblock nav_annotate%}
+
+
+
+{% block content %}
+
+{% if schemas %}
+
+
+
+<div class="container-fluid" id="ctrl-box">
+
+    <div class="row" style="padding-top: 5px; padding-bottom: 5px">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+
+                <!-- <div class="col-auto">
+                    <label class="col-form-label">Instruction: <i class="bi bi-link-45deg url-img"></i></label>
+                </div> -->
+                <div class="col-sm-4">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Go to</span>
+                        <input type="text" id="image-index-text" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="col-form-label" id="index-label"></label>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="container-fluid" id="annotate-box">
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-6">
+            <div>
+                <div class="form-group .image-meta-info" id="paper-meta-info">
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img class="url-img" id="discuss-btn" ifClicked=0 src="../static/images/icons/discuss-0.png"
+                        data-toggle="tooltip" title="mark as a to-discuss figure">
+                    <img class="url-img" id="fun-btn" ifClicked=0 src="../static/images/icons/fun-0.png"
+                        data-toggle="tooltip" title="mark as a fun figure">
+                    <img class="url-img" id="caption-btn" ifClicked=0 src="../static/images/icons/caption-0.png"
+                        data-toggle="tooltip" title="show caption">
+                    <img class="url-img" id="paper-btn" src="../static/images/icons/paper-link-0.png" data-toggle="tooltip"
+                        title="link to the paper">
+
+                </div>
+                <div class="form-group .image-meta-info" id="coding-meta-info">
+
+                </div>
+
+            </div>
+            <div id="img-box">
+                <img class="origin-img" id="vis-img" src="../static/images/placeHolder.png">
+            </div>
+            <div style="text-align: right;" id="mark-error-box">
+                <label><input type="checkbox" id="error-btn" value="">&nbsp;This figure has error</label>
+            </div>
+
+
+        </div>
+        <div class="col-md-4" id="AnnoPanel">
+
+            {% for label in schemas %}
+            {% if label.label_type == 0 %}
+            <label class="category-text block-label" id="{{label.label_id}}">{{label.label_name}}</label>
+            {% elif label.label_type == 1 %}
+            <input type="checkbox" class="btn-check check-label" id="{{label.label_id}}" name="{{label.label_parent}}" autocomplete="off">
+            <label class="btn btn-outline-primary" id="{{label.label_id}}-label" for="{{label.label_id}}">{{label.label_name}}</label>
+            {% elif label.label_type == 2 %}
+            <input type="radio" class="btn-check radio-label" name="{{label.label_parent}}" id="{{label.label_id}}"
+                autocomplete="off">
+            <label class="btn btn-outline-primary" id="{{label.label_id}}-label" for="{{label.label_id}}">{{label.label_name}}</label>
+            {% elif label.label_type == 3 %}
+                {% if label.label_name == None%}
+
+                {% else %}
+                    <label class="input-text">{{label.label_name}}</label>
+                {% endif %}
+
+
+                {% if label.label_placeholder == None%}
+                <textarea class="form-control text-label" name="{{label.label_parent}}" placeholder="" id="{{label.label_id}}"></textarea>
+                {% else %}
+                <textarea class="form-control text-label" name="{{label.label_parent}}" placeholder="{{label.label_placeholder}}" id="{{label.label_id}}"></textarea>
+                {% endif %}
+
+            
+            {% endif %}
+            {% endfor %}
+            
+
+            <div class="anno-ctrl-div">
+                <button class="btn btn-primary anno-ctrl-btn" id="savecomment">save</button>
+                <button class="btn btn-primary anno-ctrl-btn" id="next">next</button>
+                <button class="btn btn-primary anno-ctrl-btn" id="previous">previous</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-1">
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block libs %}
+
+
+<script src="../static/libs/blowup.min.js"></script>
+<script type="text/javascript">
+    var username = '{{username}}';
+    var is_ready = '{{is_ready}}';
+    var url_image_id = '{{url_image_id}}';
+</script>
+<script src="../static/javascripts/annotations/dbutils.js"></script>
+<script src="../static/javascripts/annotations/annotate.js"></script>
+
+{% endblock libs%}
